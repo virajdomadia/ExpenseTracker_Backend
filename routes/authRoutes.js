@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const User = require("../models/User");
+const auth = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -58,7 +59,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/me", authMiddleware, async (req, res) => {
+router.get("/me", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password"); // Exclude password
     if (!user) {
